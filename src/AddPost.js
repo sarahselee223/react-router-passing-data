@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-
-import loremIpsum from 'lorem-ipsum'
+import { Link } from 'react-router-dom'
+import loremIpsum from 'lorem-hipsum'
 
 class AddPost extends Component {
   constructor(props){
@@ -13,10 +13,10 @@ class AddPost extends Component {
   handleSubmit = (event) => {
     event.preventDefault()
 
-    this.props.addPost(this.state.post)
-    this.setState({
-      post: loremIpsum({count:5, units:'paragraphs'})
+    this.props.addPost(this.state.post, () => {
+      this.props.history.push('/')
     })
+
   }
 
   handleChange = (event) => {
@@ -28,13 +28,13 @@ class AddPost extends Component {
 
   render(){
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <textarea name="post" cols="80" rows="15" onChange={this.handleChange} value={ this.state.post }>
-            
+      <div className='container'>
+        <Link to="/">Back</Link>
+        <form onSubmit={ this.handleSubmit }>
+          <textarea name='post' cols='80' rows='15' onChange={ this.handleChange } value={ this.state.post }>
           </textarea>
           <div>
-            <input type="submit" />
+            <input type='submit' />
           </div>
         </form>
       </div>

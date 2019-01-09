@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+
+import NavBar from './NavBar'
+import Jumbotron from './Jumbotron';
 
 import AddPost from './AddPost'
 import ViewPosts from './ViewPosts'
 import ViewPost from './ViewPost'
 
 import shortid from 'shortid'
-import loremIpsum from 'lorem-ipsum'
+import loremIpsum from 'lorem-hipsum'
 
 class App extends Component {
   constructor(props){
@@ -17,12 +21,18 @@ class App extends Component {
     }
   }
 
-  addPost = (content) => {
+  addPost = (content, cb) => {
     const post = {id: shortid.generate(), content}
 
     this.setState({
       posts: [...this.state.posts, post]
     })
+
+    cb()
+  }
+
+  getPostById = (id) => {
+    return this.state.posts.find(post => post.id === id)
   }
 
   handleClickPost = (id) => {
@@ -30,14 +40,21 @@ class App extends Component {
       viewing:id
     })
   }
+
   render() {
     return (
       <div>
-        <AddPost addPost={this.addPost}/>
-        <hr />
-        <ViewPosts posts={this.state.posts} handleClickPost={this.handleClickPost}/>
-        <hr />
-        <ViewPost post={this.state.posts.find(ele=>ele.id === this.state.viewing)}/>
+        <NavBar />
+        <BrowserRouter>
+          <div>
+            <Jumbotron />
+            <Switch>
+              <Route exact path='/' render={ props => <ViewPosts {...props} posts={this.state.posts} handleClickPost={this.handleClickPost}/> }/>
+              <Route exact path='/new' render={ props => <AddPost {...props} addPost={this.addPost}/> } />
+              <Route exact path='/:postId' render={ props => <ViewPost {...props} getPostById={this.getPostById}/> } />
+            </Switch>
+          </div>
+        </BrowserRouter>
       </div>
     );
   }
