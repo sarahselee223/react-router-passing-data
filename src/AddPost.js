@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-
+import { withRouter } from 'react-router-dom'
 import loremIpsum from 'lorem-ipsum'
+import {Link} from 'react-router-dom'
 
 class AddPost extends Component {
   constructor(props){
@@ -17,6 +18,8 @@ class AddPost extends Component {
     this.setState({
       post: loremIpsum({count:5, units:'paragraphs'})
     })
+
+    this.props.history.push('')
   }
 
   handleChange = (event) => {
@@ -37,9 +40,10 @@ class AddPost extends Component {
             <input type="submit" />
           </div>
         </form>
+        <Link to = "./new">New</Link>
       </div>
     )
   }
 }
 
-export default AddPost
+export default withRouter(AddPost)
