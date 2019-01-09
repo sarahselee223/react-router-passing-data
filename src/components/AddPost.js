@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import loremIpsum from 'lorem-hipsum'
+
+import { addPost } from '../actions/index'
 
 class AddPost extends Component {
   constructor(props){
@@ -16,11 +20,9 @@ class AddPost extends Component {
     this.props.addPost(this.state.post, () => {
       this.props.history.push('/')
     })
-
   }
 
   handleChange = (event) => {
-    console.log(event.target.value)
     this.setState({
       [event.target.name]: event.target.value
     })
@@ -42,4 +44,7 @@ class AddPost extends Component {
   }
 }
 
-export default AddPost
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ addPost }, dispatch)
+
+export default connect(null, mapDispatchToProps)(AddPost)

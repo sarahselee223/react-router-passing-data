@@ -1,9 +1,9 @@
 import React from 'react'
-
+import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 
 const ViewPost = props => {
-  const post = props.getPostById(props.match.params.postId)
+  const { post } = props
 
   if (!post) return <Redirect to='/' />
   return (
@@ -23,4 +23,7 @@ const ViewPost = props => {
   )
 }
 
-export default ViewPost
+const mapStateToProps = (state, props) => 
+  ({ post: state.posts.find(post => post.id === props.match.params.postId)})
+
+export default connect(mapStateToProps)(ViewPost)
